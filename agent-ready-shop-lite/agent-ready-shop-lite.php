@@ -3,7 +3,7 @@
  * Plugin Name:          Agent-Ready Shop Lite
  * Plugin URI:           https://mckeecreative.store/agent-ready-shop/
  * Description:          Lets AI shopping assistants search your WooCommerce products, read details and check stock over MCP. Read-only.
- * Version:              1.0.1
+ * Version:              1.0.2
  * Author:               McKee Creative
  * Author URI:           https://mckeecreative.store/
  * Requires at least:    6.4
@@ -20,7 +20,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ARSL_VERSION', '1.0.1' );
+define( 'ARSL_VERSION', '1.0.2' );
 define( 'ARSL_FILE', __FILE__ );
 define( 'ARSL_DIR', __DIR__ );
 

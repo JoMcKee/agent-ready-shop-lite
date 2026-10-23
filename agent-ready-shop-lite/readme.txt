@@ -4,7 +4,7 @@ Tags: woocommerce, mcp, ai, ai assistant, agentic commerce
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,10 @@ No. This plugin is read-only. Assistants send shoppers to your product pages.
 No. It only answers requests that carry one of your tokens. It makes no outgoing requests.
 
 == Changelog ==
+
+= 1.0.2 =
+* Security: a request can no longer overwrite the token list while it records last-used (stored separately now).
+* Hardening: requests over 64 KB are rejected (HTTP 413); search arguments must be text; disabled variations are not reported.
 
 = 1.0.1 =
 * Security: the MCP endpoint checks the access token in its REST permission_callback.
