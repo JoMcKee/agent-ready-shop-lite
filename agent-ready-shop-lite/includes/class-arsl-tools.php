@@ -133,6 +133,9 @@ class ARSL_Tools {
 			return false;
 		}
 		$check = $p->is_type( 'variation' ) ? wc_get_product( $p->get_parent_id() ) : $p;
+		if ( $p->is_type( 'variation' ) && 'publish' !== $p->get_status() ) {
+			return false; // Disabled variation.
+		}
 		return $check && 'publish' === $check->get_status() && '' === $check->get_post_password() && 'hidden' !== $check->get_catalog_visibility();
 	}
 
@@ -178,6 +181,11 @@ class ARSL_Tools {
 			'paginate'   => true,
 			'type'       => array( 'simple', 'variable' ),
 		);
+		foreach ( array( 'query', 'category' ) as $k ) {
+			if ( isset( $a[ $k ] ) && ! is_string( $a[ $k ] ) ) {
+				throw new ARSL_Error( 'query and category must be text', -32602 );
+			}
+		}
 		if ( ! empty( $a['query'] ) ) {
 			$q['s'] = sanitize_text_field( substr( (string) $a['query'], 0, 100 ) );
 		}

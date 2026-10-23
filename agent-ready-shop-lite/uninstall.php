@@ -9,6 +9,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 delete_option( 'arsl_settings' );
 delete_option( 'arsl_tokens' );
+delete_option( 'arsl_tokens_seen' );
 delete_option( 'arsl_log' );
 global $wpdb;
 // Rate-limit counters are short-lived transients with a fixed prefix; there is no API to delete by prefix.

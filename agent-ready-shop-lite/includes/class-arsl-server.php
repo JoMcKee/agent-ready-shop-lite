@@ -180,6 +180,21 @@ class ARSL_Server {
 			$res->header( 'Retry-After', '60' );
 			return self::nocache( $res );
 		}
+		if ( strlen( $r->get_body() ) > 65536 ) {
+			return self::nocache(
+				new WP_REST_Response(
+					array(
+						'jsonrpc' => '2.0',
+						'id'      => null,
+						'error'   => array(
+							'code'    => -32600,
+							'message' => 'Request too large',
+						),
+					),
+					413
+				)
+			);
+		}
 		$msg = json_decode( $r->get_body(), true );
 		if ( ! is_array( $msg ) || isset( $msg[0] ) ) {
 			return self::nocache(

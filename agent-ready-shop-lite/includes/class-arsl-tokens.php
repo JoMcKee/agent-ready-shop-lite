@@ -55,6 +55,9 @@ class ARSL_Tokens {
 		$all = get_option( 'arsl_tokens', array() );
 		unset( $all[ $id ] );
 		update_option( 'arsl_tokens', $all, false );
+		$seen = get_option( 'arsl_tokens_seen', array() );
+		unset( $seen[ $id ] );
+		update_option( 'arsl_tokens_seen', $seen, false );
 	}
 
 	/**
@@ -70,10 +73,11 @@ class ARSL_Tokens {
 		$h = self::hash( $token );
 		foreach ( get_option( 'arsl_tokens', array() ) as $id => $rec ) {
 			if ( hash_equals( $rec['hash'], $h ) ) {
-				if ( time() - (int) $rec['last'] > 300 ) {
-					$all                = get_option( 'arsl_tokens', array() );
-					$all[ $id ]['last'] = time();
-					update_option( 'arsl_tokens', $all, false );
+				$seen = get_option( 'arsl_tokens_seen', array() );
+				if ( time() - (int) ( $seen[ $id ] ?? 0 ) > 300 ) {
+					// Separate option: a request can never resurrect a token revoked a moment ago.
+					$seen[ $id ] = time();
+					update_option( 'arsl_tokens_seen', $seen, false );
 				}
 				$rec['id'] = $id;
 				return $rec;
@@ -88,13 +92,14 @@ class ARSL_Tokens {
 	 * @return array
 	 */
 	public static function list_public() {
-		$out = array();
+		$out  = array();
+		$seen = get_option( 'arsl_tokens_seen', array() );
 		foreach ( get_option( 'arsl_tokens', array() ) as $id => $rec ) {
 			$out[] = array(
 				'id'        => $id,
 				'label'     => $rec['label'],
 				'created'   => $rec['created'],
-				'last_used' => $rec['last'],
+				'last_used' => (int) ( $seen[ $id ] ?? 0 ),
 			);
 		}
 		return $out;
